@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.models.ImageQuery import ImageQuery, QueryResult
+from app.schemas.ImageQuery import ImageQuery, QueryResult
 
 
 router = APIRouter()
