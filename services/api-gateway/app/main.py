@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     print("Clean Up complete: shutting down now")
 
 
-app = FastAPI(title=settings.app_name, lifespan=lifespan)
+app = FastAPI(title=settings.app_name, version=settings.version, lifespan=lifespan)
 
 app.include_router(v1.router, prefix="/v1")
 # app.include_router(info.router, tags=["info"])
