@@ -2,9 +2,7 @@ import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.api import info, caption, misc
-
-APP_NAME = os.getenv("APP_NAME") if os.getenv("APP_NAME") else "API Gateway"
-
+from app.config.settings import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -17,7 +15,7 @@ async def lifespan(app: FastAPI):
     print("Clean Up complete: shutting down now")
 
 
-app = FastAPI(title=APP_NAME, lifespan=lifespan)
+app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
 app.include_router(info.router, tags=["info"])
 app.include_router(caption.router, prefix="/caption", tags=["caption"])
