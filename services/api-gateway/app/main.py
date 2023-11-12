@@ -1,7 +1,7 @@
 import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from app.api import info, caption, misc
+from app.api import v1
 from app.config.settings import settings
 
 @asynccontextmanager
@@ -17,6 +17,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
-app.include_router(info.router, tags=["info"])
-app.include_router(caption.router, prefix="/caption", tags=["caption"])
-app.include_router(misc.router, tags=["misc"])
+app.include_router(v1.router, prefix="/v1")
+# app.include_router(info.router, tags=["info"])
+# app.include_router(caption.router, prefix="/caption", tags=["caption"])
+# app.include_router(misc.router, tags=["misc"])
