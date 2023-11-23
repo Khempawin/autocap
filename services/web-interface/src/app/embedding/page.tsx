@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import Image from 'next/image';
-import { makePostRequest } from '@/lib';
+import { makePostRequest } from '@/utils';
 
 
 export default function Embedding() {
