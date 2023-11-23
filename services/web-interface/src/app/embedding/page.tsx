@@ -1,6 +1,7 @@
 "use client"
 import React from 'react';
 import Image from 'next/image';
+import { makePostRequest } from '@/lib';
 
 
 export default function Embedding() {
@@ -11,18 +12,8 @@ export default function Embedding() {
   const submitForm = async () => {
     console.log(topK);
     console.log(inputFile);
-    const dataString: string = JSON.stringify({ "k": topK, "image": imageData });
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: dataString
-    };
-
-    console.log(requestOptions);
-
-    const result = await fetch("http://localhost:8000/v1/image-2-text", requestOptions);
+    const jsonData = { "k": topK, "image": imageData };
+    const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
     console.log(result);
   };
 
