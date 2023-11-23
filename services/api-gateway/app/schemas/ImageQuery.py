@@ -1,9 +1,9 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Any
 
 class ImageQuery(BaseModel):
     k: int
-    image: bytes
+    image: Any
 
 class QueryResult(BaseModel):
     task: str

@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.schemas.ImageQuery import ImageQuery, QueryResult
+# from PIL import Image
 
 
 router = APIRouter()
@@ -7,6 +8,7 @@ router = APIRouter()
 
 @router.post("/image-2-text", response_model=QueryResult)
 def image2test(query: ImageQuery):
+    print(query)
     # Get representation from embedding service
     # Get to k results ids from index service
     # For each record in result
