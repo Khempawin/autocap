@@ -5,7 +5,7 @@ import { makePostRequest } from '@/utils';
 
 
 export default function Embedding() {
-  const [topK, setTopK] = React.useState<number>(0);
+  const [topK, setTopK] = React.useState<number>(1);
   const [imageData, setImageData] = React.useState<string>("");
   const [inputFile, setInputFile] = React.useState<File>();
 
@@ -20,14 +20,23 @@ export default function Embedding() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        Embedding UI
+        <div>
+          <h1>Embedding UI</h1>
+        </div>
         <form onSubmit={(e) => {
           e.preventDefault();
           submitForm();
         }}>
           <ul>
+            <li>Set Top K</li>
             <li>
-              <input type="number" placeholder=" Enter Top K" value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTopK(parseInt(e.currentTarget.value))} />
+              <input type="number" 
+                placeholder=" Enter Top K"
+                style={{ color: 'black' }} // for visibility
+                value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setTopK(e.target.value ? Math.max(1, parseInt(e.target.value, 10)) : 0); // TODO clean this up
+                ; console.log(e.target.value)
+              }} />
             </li>
             <li>
               <input type="file" accept='image/*' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
