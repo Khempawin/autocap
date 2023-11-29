@@ -1,28 +1,48 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import { makePostRequest } from '@/utils';
 
 export default function Indexing() {
-  const [vector, setVector] = React.useState('');
-  const [ids, setIds] = React.useState([]);
-  const [response, setResponse] = React.useState({});
+  const [ids, setIds] = useState([]);
+  const [inputFile, setInputFile] = useState(null);
+  const [response, setResponse] = useState({});
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    // assuming the vector is a string of numbers separated by commas, may need to change
-    const vectorArray = vector.split(',').map(Number);
-    const jsonData = {"vector": vectorArray};
-    const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
-    setResponse(result);
-    setIds(result.json().ids);
+  const handleFileChange = (e: any) => {
+    if (e.target.files.length > 0) {
+      setInputFile(e.target.files[0]);
+    }
   };
 
+  const submitForm = async (e: any) => {
+    e.preventDefault();
+
+    if (inputFile) {
+      const formData = new FormData();
+      formData.append('vector', inputFile);
+      const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", formData); // TODO change API endpoint 
+      setResponse(result);
+      setIds(result.ids); // TODO change to response field
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        Indexing UI
+        <h2>Indexing UI</h2>
+        <form onSubmit={submitForm}>
+          <ul>
+            <li>
+              <input type="file" accept='.npy,.npz' onChange={handleFileChange} />
+            </li>
+            <li>
+              <button type="submit">Submit</button>
+            </li>
+          </ul>
+        </form>
+      </div>
+      <div>
+        <h2>Returned IDs</h2>
+        <pre>{ids}</pre>
       </div>
     </main>
   )
