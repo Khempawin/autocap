@@ -8,13 +8,14 @@ export default function Embedding() {
   const [topK, setTopK] = React.useState<number>(1);
   const [imageData, setImageData] = React.useState<string>("");
   const [inputFile, setInputFile] = React.useState<File>();
+  const [response, setResponse] = React.useState({});
 
   const submitForm = async () => {
     console.log(topK);
     console.log(inputFile);
     const jsonData = { "k": topK, "image": imageData };
     const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
-    console.log(result);
+    setResponse(result);
   };
 
   return (
@@ -30,13 +31,13 @@ export default function Embedding() {
           <ul>
             <li>Set Top K</li>
             <li>
-              <input type="number" 
+              <input type="number"
                 placeholder=" Enter Top K"
                 style={{ color: 'black' }} // for visibility
                 value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setTopK(e.target.value ? Math.max(1, parseInt(e.target.value, 10)) : 0); // TODO clean this up
-                ; console.log(e.target.value)
-              }} />
+                  ; console.log(e.target.value)
+                }} />
             </li>
             <li>
               <input type="file" accept='image/*' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +60,10 @@ export default function Embedding() {
             </li>
           </ul>
         </form>
+      </div>
+      <div>
+        <h2>Suggested Captions</h2>
+        <pre>{JSON.stringify(response, null, 2)}</pre>
       </div>
     </main>
   )
