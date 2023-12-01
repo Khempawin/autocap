@@ -4,25 +4,22 @@ import { makePostRequest } from '@/utils';
 
 export default function Indexing() {
   const [ids, setIds] = useState([]);
-  const [inputFile, setInputFile] = useState(null);
   const [response, setResponse] = useState({});
+  const [inputNumbers, setInputNumbers] = useState('');
 
-  const handleFileChange = (e: any) => {
-    if (e.target.files.length > 0) {
-      setInputFile(e.target.files[0]);
-    }
+
+  const handleInputChange = (e: any) => {
+    setInputNumbers(e.target.value); 
   };
 
   const submitForm = async (e: any) => {
     e.preventDefault();
-
-    if (inputFile) {
-      const formData = new FormData();
-      formData.append('vector', inputFile);
-      const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", formData); // TODO change API endpoint 
-      setResponse(result);
-      setIds(result.ids); // TODO change to response field
-    }
+    const user_ids = inputNumbers.split(',').map(num => parseInt(num.trim()));
+    const formData = new FormData();
+    formData.append("ids", JSON.stringify(user_ids))
+    const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", formData); // TODO change API endpoint 
+    setResponse(result);
+    setIds(result.ids); // TODO change to response field
   };
 
   return (
@@ -32,7 +29,11 @@ export default function Indexing() {
         <form onSubmit={submitForm}>
           <ul>
             <li>
-              <input type="file" accept='.npy,.npz' onChange={handleFileChange} />
+              <input type="text" 
+              style={{ color: 'black' }} // for visibility
+              placeholder="Enter numbers separated by commas" 
+              value={inputNumbers} 
+              onChange={handleInputChange} />
             </li>
             <li>
               <button type="submit">Submit</button>

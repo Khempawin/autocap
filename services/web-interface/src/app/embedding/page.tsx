@@ -36,7 +36,6 @@ export default function Embedding() {
                 style={{ color: 'black' }} // for visibility
                 value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setTopK(e.target.value ? Math.max(1, parseInt(e.target.value, 10)) : 0); // TODO clean this up
-                  ; console.log(e.target.value)
                 }} />
             </li>
             <li>
@@ -62,7 +61,7 @@ export default function Embedding() {
         </form>
       </div>
       <div>
-        <h2>Suggested Captions</h2>
+        <h2>Image Embedding</h2>
         <pre>{JSON.stringify(response, null, 2)}</pre>
       </div>
     </main>
