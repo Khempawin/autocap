@@ -1,25 +1,27 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { makePostRequest } from '@/utils';
 
 export default function Indexing() {
   const [ids, setIds] = useState([]);
   const [response, setResponse] = useState({});
   const [inputNumbers, setInputNumbers] = useState('');
+  const [loading, setLoading] = useState(false);
 
-
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputNumbers(e.target.value); 
   };
 
-  const submitForm = async (e: any) => {
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     const user_ids = inputNumbers.split(',').map(num => parseInt(num.trim()));
     const formData = new FormData();
     formData.append("ids", JSON.stringify(user_ids))
     const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", formData); // TODO change API endpoint 
     setResponse(result);
     setIds(result.ids); // TODO change to response field
+    setLoading(false);
   };
 
   return (
@@ -36,7 +38,7 @@ export default function Indexing() {
               onChange={handleInputChange} />
             </li>
             <li>
-              <button type="submit">Submit</button>
+              <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Submit'}</button>
             </li>
           </ul>
         </form>

@@ -1,21 +1,23 @@
 "use client"
-import React from 'react';
+import React, { useState,  FormEvent } from 'react';
 import Image from 'next/image';
 import { makePostRequest } from '@/utils';
 
 
 export default function Embedding() {
-  const [topK, setTopK] = React.useState<number>(1);
-  const [imageData, setImageData] = React.useState<string>("");
-  const [inputFile, setInputFile] = React.useState<File>();
-  const [response, setResponse] = React.useState({});
+  const [topK, setTopK] = useState<number>(1);
+  const [imageData, setImageData] = useState<string>("");
+  const [inputFile, setInputFile] = useState<File>();
+  const [response, setResponse] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const submitForm = async () => {
-    console.log(topK);
-    console.log(inputFile);
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true);
     const jsonData = { "k": topK, "image": imageData };
     const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
     setResponse(result);
+    setLoading(false);
   };
 
   return (
@@ -25,8 +27,7 @@ export default function Embedding() {
           <h1>Embedding UI</h1>
         </div>
         <form onSubmit={(e) => {
-          e.preventDefault();
-          submitForm();
+          submitForm(e);
         }}>
           <ul>
             <li>Set Top K</li>
@@ -58,6 +59,7 @@ export default function Embedding() {
               </div>
             </li>
           </ul>
+          <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Submit'}</button>
         </form>
       </div>
       <div>
