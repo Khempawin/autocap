@@ -1,4 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Form, File, UploadFile
+from typing import Annotated
+from app.ai_models import clip
+from PIL import Image
+from app.helper import utils
+import torch
+import numpy as np
 
 router = APIRouter()
 
@@ -13,12 +19,24 @@ def caption_database_info():
     }
 
 
-@router.post("/add")
-def add_caption():
-    # Get embedded representation from embedding service
-    # Save caption to database, get saved id
-    # Send embedded representation index-service
+@router.post("/embed-caption")
+def embed_caption(
+    caption: Annotated[str, Form()]
+    ):
+    embedded_caption = utils.embed_caption(caption).tolist()
     return {
-        "result" : "success" 
+        "result" : embedded_caption,
+        "result_length" : len(embedded_caption)
+    }
+
+@router.post("/embed-image")
+def embed_image(
+    image: Annotated[UploadFile, File()]
+):
+    img = Image.open(image.file)    
+    embedded_image = utils.embed_image(img).tolist()
+    return {
+        "result" : embedded_image,
+        "result_length" : len(embedded_image)
     }
 

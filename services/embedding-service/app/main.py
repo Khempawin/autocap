@@ -9,6 +9,7 @@ async def lifespan(app: FastAPI):
     # Connect redis client
     # Connect to database
     print("Connection Setup success")
+    print(f"CLIP model dir : {settings.clip_model_dir}")
     yield
     # Disconnect redis client
     # Disconnect from database
