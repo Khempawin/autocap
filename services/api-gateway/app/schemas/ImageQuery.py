@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 from typing import List, Any
+from fastapi import UploadFile
 
 class ImageQuery(BaseModel):
     k: int
-    image: Any
+    image: UploadFile
 
 class QueryResult(BaseModel):
     task: str
