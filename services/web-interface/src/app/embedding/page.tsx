@@ -1,33 +1,43 @@
 "use client"
-import React from 'react';
+import React, { useState,  FormEvent } from 'react';
 import Image from 'next/image';
 import { makePostRequest } from '@/utils';
 
 
 export default function Embedding() {
-  const [topK, setTopK] = React.useState<number>(0);
-  const [imageData, setImageData] = React.useState<string>("");
-  const [inputFile, setInputFile] = React.useState<File>();
+  const [topK, setTopK] = useState<number>(1);
+  const [imageData, setImageData] = useState<string>("");
+  const [inputFile, setInputFile] = useState<File>();
+  const [response, setResponse] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const submitForm = async () => {
-    console.log(topK);
-    console.log(inputFile);
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true);
     const jsonData = { "k": topK, "image": imageData };
     const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
-    console.log(result);
+    setResponse(result);
+    setLoading(false);
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        Embedding UI
+        <div>
+          <h1>Embedding UI</h1>
+        </div>
         <form onSubmit={(e) => {
-          e.preventDefault();
-          submitForm();
+          submitForm(e);
         }}>
           <ul>
+            <li>Set Top K</li>
             <li>
-              <input type="number" placeholder=" Enter Top K" value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTopK(parseInt(e.currentTarget.value))} />
+              <input type="number"
+                placeholder=" Enter Top K"
+                style={{ color: 'black' }} // for visibility
+                value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setTopK(e.target.value ? Math.max(1, parseInt(e.target.value, 10)) : 0); // TODO clean this up
+                }} />
             </li>
             <li>
               <input type="file" accept='image/*' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +59,12 @@ export default function Embedding() {
               </div>
             </li>
           </ul>
+          <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Submit'}</button>
         </form>
+      </div>
+      <div>
+        <h2>Image Embedding</h2>
+        <pre>{JSON.stringify(response, null, 2)}</pre>
       </div>
     </main>
   )
