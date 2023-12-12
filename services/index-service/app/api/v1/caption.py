@@ -26,8 +26,6 @@ def search_index(query: IndexQuery):
     results = indexer.retrieve_caption_index(query.embedding_vector, query.k)
     # Save caption to database, get saved id
     results = [int(idx) for idx in results]
-    print(results)
-    print(type(results))
     # Send embedded representation index-service
     return {
         "result" : results
