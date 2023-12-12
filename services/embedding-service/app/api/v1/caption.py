@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Form, File, UploadFile
-from typing import Annotated
-from app.ai_models import clip
+from fastapi import APIRouter
 from PIL import Image
 from app.helper import utils
-import torch
-import numpy as np
+from app.schemas.Embedding import ImageEmbedQuery, CaptionEmbedQuery
+import base64
+import io
+import jsonpickle
 
 router = APIRouter()
 
@@ -21,9 +21,9 @@ def caption_database_info():
 
 @router.post("/embed-caption")
 def embed_caption(
-    caption: Annotated[str, Form()]
+    query: CaptionEmbedQuery
     ):
-    embedded_caption = utils.embed_caption(caption).tolist()
+    embedded_caption = utils.embed_caption(query.caption).tolist()
     return {
         "result" : embedded_caption,
         "result_length" : len(embedded_caption)
@@ -31,12 +31,14 @@ def embed_caption(
 
 @router.post("/embed-image")
 def embed_image(
-    image: Annotated[UploadFile, File()]
+    query: ImageEmbedQuery
 ):
-    img = Image.open(image.file)    
+    data = jsonpickle.loads(query.json_image)
+    print(type(data["image"]))
+    io_buffer = io.BytesIO(base64.b64decode(data["image"]))
+    img = Image.open(io_buffer)
     embedded_image = utils.embed_image(img).tolist()
     return {
         "result" : embedded_image,
         "result_length" : len(embedded_image)
     }
-
