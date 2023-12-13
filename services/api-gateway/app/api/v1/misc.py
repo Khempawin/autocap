@@ -100,13 +100,6 @@ def handle_retrieve_index(query: IndexQuery):
     }
 
 
-@router.get("/db/caption")
-def handle_get_caption(id: int, use_cache: bool, db: Session = Depends(get_db)):
-    return {
-        "result": get_caption(id, use_cache, db)
-    }
-
-
 @router.get("/redis/cache")
 def handle_get_cache():
     keys = redis_client.keys("*")
