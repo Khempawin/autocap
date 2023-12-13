@@ -42,20 +42,28 @@ export default function Home() {
     }
 
     return (
-      <table>
+      <table className="border-separate border border-slate-400">
         <thead>
           <tr>
-            <th>Rank</th>
-            <th>Caption</th>
+            <th className="border border-slate-300">Rank</th>
+            <th className="border border-slate-300">Caption</th>
           </tr>
         </thead>
         <tbody>
-          {resultList.map((item: any, index: any) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{item}</td>
-            </tr>
-          ))}
+          {
+            resultList.map((caption: string, index: number) => {
+              return (
+                <tr key={index} className="my-2">
+                  <td className="border border-slate-300">
+                    {index}
+                  </td>
+                  <td className="border border-slate-300">
+                    {caption}
+                  </td>
+                </tr>
+              );
+            })
+          }
         </tbody>
       </table>
     );
@@ -63,25 +71,32 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <div>
-          <h1>AutoCap: Image Captioning as a Service</h1>
+      <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold my-4 leading-tight w-full flex flex-col items-center">AutoCap: Image Captioning as a Service</h1>
         </div>
         <form onSubmit={(e) => {
           submitForm(e);
         }}>
-          <div>
+          <div className="w-full flex flex-col items-center">
             <p>Number of captions to view</p>
           </div>
-          <div>
+          <div className="w-full flex flex-col items-center">
             <input type="number"
               placeholder="Enter number of captions"
-              style={{ color: 'black' }} // for visibility
+              style={{
+                padding: '5px', 
+                fontSize: '0.8rem',
+                height: '30px', 
+                width: '100px', 
+                boxSizing: 'border-box', 
+                color: 'black'
+              }}
               value={topK} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setTopK(e.target.value ? Math.max(1, parseInt(e.target.value, 10)) : 0); // TODO clean this up
               }} />
           </div>
-          <div>
+          <div className="w-full flex flex-col items-center">
             <input type="file" accept='image/*' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (e.target?.files?.[0]) {
                 const file = e.target.files[0];
@@ -102,26 +117,16 @@ export default function Home() {
               "No Data"
             )}
           </div>
-          <button type="submit" disabled={loading}>{loading ? 'Loading...' : 'Submit'}</button>
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled={loading}>{loading ? 'Loading...' : 'Submit'}</button>
         </form>
       </div>
-      <div>
-        <h2>Suggested Captions</h2>
-        <div>
+      <div className="w-full flex flex-col items-center">
+        <h4 className="w-full flex flex-col items-center">Captions</h4>
+        <div className="w-full flex flex-col items-center">
           {response ? renderCaptions() : 'Waiting for response...'}
         </div>
       </div>
       <style jsx>{`
-
-        
-
-/* Styles for dark mode */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: white;
-  }
-}
-
         body {
           background-color: white;
         }
@@ -130,51 +135,14 @@ export default function Home() {
           width: 512px;
           height: 512px;
           position: relative;
-        }
-
-        button {
-          padding: 10px 15px;
-          border: 2px solid #295e48;
-          background-color: transparent;
-          color: #295e48;
-          font-size: 16px;
-          cursor: pointer;
-          transition: all 0.3s;
-        }
-
-        button:hover {
-          background-color: #295e48;
-          color: white;
-        }
-        .table-container {
-          margin: 20px 0;
-          overflow-x: auto;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          background-color: #f8f8f8;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-          text-align: left;
-          padding: 12px 15px;
-          border-bottom: 1px solid red;
-        }
-        th {
-          background-color: #4CAF50;
-          color: white;
-        }
-        tbody tr:nth-child(odd) {
-          background-color: #c8e6c9;
-        }
-        tbody tr:hover {
-          background-color: #c8e6c9;
+          margin: 0 auto; // This will center the boundingBox horizontally
         }
         div {
           margin-bottom: 10px;
+          width: 100%; // Ensure divs take the full width
         }
       `}</style>
+
     </main>
   )
 }
