@@ -118,3 +118,10 @@ def handle_get_cache():
         "results": data,
         "record_count": len(data)
     }
+
+@router.delete("/redis/remove-cache")
+def handle_remove_cache_record(id: int):
+    redis_client.delete(id)
+    return {
+        "result": "deletion succeeded"
+    }
