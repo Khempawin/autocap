@@ -47,6 +47,12 @@ export default function Indexing() {
         <h2>Returned IDs</h2>
         <pre>{ids}</pre>
       </div>
+      <style jsx>{`
+      div {
+          margin-bottom: 10px;
+          width: 100%; // Ensure divs take the full width
+        }
+      `}</style>
     </main>
   )
 }
