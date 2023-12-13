@@ -32,6 +32,7 @@ export default function Embedding() {
     setLoading(false);
   };
 
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
@@ -76,7 +77,7 @@ export default function Embedding() {
       </div>
       <div>
         <h2>Image Embedding</h2>
-        <pre>{JSON.stringify(response, null, 2)}</pre>
+        {JSON.stringify(response, null, 2)}
       </div>
     </main>
   )
