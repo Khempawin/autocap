@@ -3,9 +3,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.api import v1
 from app.config.settings import settings
+from app.helper.indexer import indexer
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Load Indexer
+    indexer.load_indices(settings.startup_data_path)
     # Connect redis client
     # Connect to database
     print("Connection Setup success")

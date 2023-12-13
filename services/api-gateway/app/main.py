@@ -4,12 +4,16 @@ from fastapi import FastAPI
 from app.api import v1
 from app.config.settings import settings
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.models import Base
+from app.database import engine
+from app.redis_local import redis_client
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Connect redis client
+    # Test redis client
+    print(f"Response from redis : {redis_client.ping()}")
     # Connect to database
+    Base.metadata.create_all(bind=engine)
     print("Connection Setup success")
     yield
     # Disconnect redis client

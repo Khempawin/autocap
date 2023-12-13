@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  db:
+    image: bitnami/postgresql:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USERNAME=my_user
+      - POSTGRESQL_PASSWORD=password123
+      - POSTGRESQL_DATABASE=my_database
+    volumes:
+      - postgres_data:/bitnami/postgresql
+  redis:
+    image: redis:7-bookworm
+    ports:
+      - "6379:6379"
+  embedding-svc:
+    image: hush205/autocap-embedding-service:latest
+    ports:
+      - "8001:80"
+  indexing-svc:
+    image: hush205/autocap-index-service:latest
+    ports:
+      - "8002:80"
+  api-gateway:
+    image: hush205/autocap-api-gateway:latest
+    ports:
+      - "8000:80"
+    environment:
+      - embed_service_base_url=http://embedding-svc
+      - index_service_base_url=http://indexing-svc
+      - caption_db_uri=postgresql+psycopg2://my_user:password123@db:5432/my_database
+      - redis_host=redis
+      - redis_port=6379
+      - redis_cache_seconds=60
+
+volumes:
+  postgres_data:
