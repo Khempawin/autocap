@@ -1,11 +1,9 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated, List
-from app.schemas.Query import QueryResult, IndexQuery
+from app.schemas.Caption import AddCaption
 from app.config.settings import settings
 from sqlalchemy.orm import Session
 from app.dependency import get_db
-from app import crud
-from app.redis_local import redis_client
 from app.helper.utils import get_caption, get_caption_count, get_caption_page
 
 
@@ -34,12 +32,12 @@ def handle_get_caption_page(page: int=1, use_cache: bool=True, db: Session = Dep
     }
 
 
-@router.post("/add")
-def add_caption():
-    # Get embedded representation from embedding service
-    # Save caption to database, get saved id
-    # Send embedded representation index-service
-    return {
-        "result" : "success" 
-    }
+# @router.post("/add")
+# def add_caption(caption_body: AddCaption):
+#     # Get embedded representation from embedding service
+#     # Save caption to database, get saved id
+#     # Send embedded representation index-service
+#     return {
+#         "result" : "success" 
+#     }
 

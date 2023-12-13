@@ -12,3 +12,7 @@ class CaptionBase(BaseModel):
 
     class Config:
         orm_mode = True
+        
+
+class AddCaption(BaseModel):
+    caption: str

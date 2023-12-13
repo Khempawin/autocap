@@ -19,11 +19,22 @@ const getCaptions = async (page: number): Promise<iCaption[]> => {
   return res.data.result;
 }
 
+const getCaptionById = async (id: number): Promise<string> => {
+  const res = await axios.get("http://localhost:8000/api/v1/caption/db/caption", {
+    params: {
+      id,
+      use_cache: true
+    }
+  })
+  return res.data.result;
+}
+
 export default function CaptionDatabase() {
   const [captions, setCaptions] = React.useState<iCaption[]>([]);
-  const [newCaption, setNewCaption] = React.useState<string>("");
+  const [captionId, setCaptionId] = React.useState<number | undefined>();
   const [captionCount, setCaptionCount] = React.useState<number>(0);
   const [pageNumber, setPageNumber] = React.useState<number>(1);
+  const [targetCaption, setTargetCaption] = React.useState<string>("");
 
   const updateCaptionPage = React.useCallback(async (page: number) => {
     const resCount = await getCaptions(page);
@@ -43,10 +54,14 @@ export default function CaptionDatabase() {
     updateCaptionPage(pageNumber);
   }, [pageNumber]);
 
-  const handleSubmitForm = (e: FormEvent) => {
+  const handleSubmitForm = async (e: FormEvent) => {
     e.preventDefault();
-    alert(`Added ${newCaption}`);
-    setNewCaption("");
+    if(!captionId)
+    {
+      return;
+    }
+    const result_caption = await getCaptionById(captionId);
+    setTargetCaption(result_caption);
   };
 
   const handleNextPage = async () => {
@@ -74,18 +89,23 @@ export default function CaptionDatabase() {
             <h4 className="m-8">{`Current Captions in Database : ${captionCount}`}</h4>
           </li>
           <li className="my-4">
-            <h4 className="w-4/5 my-4">New Caption</h4>
+            <h4 className="w-4/5 my-4">Search Caption by ID</h4>
             <form onSubmit={(e) => {
               handleSubmitForm(e);
             }}>
               <div className="flex">
                 <div className="flex-initial w-64">
-                  <input type="text" value={newCaption} onChange={(e) => setNewCaption(e.target.value)} placeholder="Enter a new caption" />
+                  <input type="number" value={captionId} onChange={(e) => setCaptionId(parseInt(e.target.value))} placeholder="Enter a caption id" />
                 </div>
                 <div className="flex-initial w-32">
                   <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Add Caption
+                    Search Caption
                   </button>
+                </div>
+                <div className="flex-initial w-96 mx-8">
+                  <p>
+                    {targetCaption}
+                  </p>
                 </div>
               </div>
             </form>
