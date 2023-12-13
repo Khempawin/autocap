@@ -2,6 +2,7 @@
 import React, { useState,  FormEvent } from 'react';
 import Image from 'next/image';
 import { makePostRequest } from '@/utils';
+import Axios from "axios";
 
 
 export default function Embedding() {
@@ -14,8 +15,19 @@ export default function Embedding() {
   const submitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true);
-    const jsonData = { "k": topK, "image": imageData };
-    const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
+    // Prepare form data
+    let formData = new FormData();
+    formData.append("k", topK.toString());
+    formData.append("image", inputFile as Blob);
+
+    const headers = {
+      "Content-Type": "multipart/form-data"
+    }
+    const result = await Axios.post("http://localhost:8000/api/v1/image-2-text", formData, {
+      headers: headers
+    })
+    // const jsonData = { "k": topK, "image": inputFile };
+    // const result = await makePostRequest("http://localhost:8000/api/v1/image-2-text", jsonData);
     setResponse(result);
     setLoading(false);
   };
