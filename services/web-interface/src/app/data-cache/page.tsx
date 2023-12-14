@@ -19,7 +19,7 @@ export default function DataCaching() {
     setLoading(true);
     setFetched(true);
     try {
-      const response = await Axios.get("http://localhost:8000/api/v1/redis/cache");
+      const response = await Axios.get("/api/v1/redis/cache");
       console.log(response);
       setData(response.data);
     } catch (error) {
@@ -32,7 +32,7 @@ export default function DataCaching() {
     setLoading(true);
     const numericId = parseInt(id, 10);
     try {
-      const response = await Axios.delete(`http://localhost:8000/api/v1/redis/remove-cache?id=${numericId}`);
+      const response = await Axios.delete(`/api/v1/redis/remove-cache?id=${numericId}`);
       alert(response.data.result);
     } catch (error) {
       console.error("Error deleting cache record:", error);
