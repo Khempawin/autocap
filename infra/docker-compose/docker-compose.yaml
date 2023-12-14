@@ -12,20 +12,20 @@ services:
       - postgres_data:/bitnami/postgresql
   redis:
     image: redis:7-bookworm
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
   embedding-svc:
     image: hush205/autocap-embedding-service:latest
-    ports:
-      - "8001:80"
+    # ports:
+    #   - "8001:80"
   indexing-svc:
     image: hush205/autocap-index-service:latest
-    ports:
-      - "8002:80"
+    # ports:
+    #   - "8002:80"
   api-gateway:
     image: hush205/autocap-api-gateway:latest
-    ports:
-      - "8000:80"
+    # ports:
+    #   - "8000:80"
     environment:
       - embed_service_base_url=http://embedding-svc
       - index_service_base_url=http://indexing-svc
@@ -33,6 +33,15 @@ services:
       - redis_host=redis
       - redis_port=6379
       - redis_cache_seconds=60
+    depends_on:
+      - redis
+      - db
+  web-interface:
+    image: hush205/autocap-web-interface:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - API_GATEWAY_BASE_URL=http://api-gateway
 
 volumes:
   postgres_data:

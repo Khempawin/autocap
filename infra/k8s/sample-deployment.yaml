@@ -15,5 +15,12 @@ spec:
       containers:
         - name: web
           image: nginx:1.21.5-alpine
+          resources:
+            requests:
+              cpu: 100m
+              memory: 400Mi
+            limits:
+              cpu: 1000m
+              memory: 2000Mi
           ports:
             - containerPort: 80

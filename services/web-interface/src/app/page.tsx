@@ -19,7 +19,7 @@ export default function Home() {
     formData.append("image", inputFile as Blob);
 
     const headers = { "Content-Type": "multipart/form-data" }
-    const result = await Axios.post("http://localhost:8000/api/v1/image-2-text", formData, { headers })
+    const result = await Axios.post("/api/v1/image-2-text", formData, { headers })
     setResponse(result);
     setLoading(false);
   };

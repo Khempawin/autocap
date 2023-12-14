@@ -11,4 +11,8 @@ class CaptionBase(BaseModel):
     image_file_exist : bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        
+
+class AddCaption(BaseModel):
+    caption: str

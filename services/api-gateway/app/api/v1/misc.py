@@ -89,7 +89,7 @@ def handle_embed_caption(caption: Annotated[str, Form()]):
     }
 
 
-@router.post("/indexing/retreive-index")
+@router.post("/indexing/retrieve-index")
 def handle_retrieve_index(query: IndexQuery):
     updated_dict = query.model_dump()
     updated_dict["embedding_vector"] = updated_dict.pop("vector")
@@ -97,13 +97,6 @@ def handle_retrieve_index(query: IndexQuery):
     res_data = res.json()
     return {
         "result": res_data["result"]
-    }
-
-
-@router.get("/db/caption")
-def handle_get_caption(id: int, use_cache: bool, db: Session = Depends(get_db)):
-    return {
-        "result": get_caption(id, use_cache, db)
     }
 
 

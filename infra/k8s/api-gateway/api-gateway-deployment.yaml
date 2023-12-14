@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api-gateway
+  template:
+    metadata:
+      labels:
+        component: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: hush205/autocap-api-gateway:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 400Mi
+            limits:
+              cpu: 1000m
+              memory: 2000Mi
+          ports:
+          - containerPort: 5432
+          env:
+          - name: embed_service_base_url
+            value: "http://embedding-svc"
+          - name: index_service_base_url
+            value: "http://index-svc"
+          - name: caption_db_uri
+            value: "postgresql+psycopg2://my_user:password123@db-service:5432/my_database"
+          - name: REDIS_HOST
+            value: "redis-svc"
+          - name: REDIS_PORT
+            value: "6379"
+          - name: redis_cache_seconds
+            value: "60"
