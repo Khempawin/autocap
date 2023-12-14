@@ -3,16 +3,23 @@ kind: Ingress
 metadata:
   name: ingress-service
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: 16m
 spec:
+  ingressClassName: "nginx"
   rules:
     - http:
         paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway-svc
+                port: 
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: web-cluster-ip-service
+                name: web-svc
                 port: 
-                  number: 80
+                  number: 3000

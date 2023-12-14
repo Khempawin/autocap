@@ -1,29 +1,27 @@
-apiVersion: apps/v1 #  for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: embedding-dpl
+  name: embedding-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: embedding-dpl
-  replicas: 1
+      component: embedding
   template:
     metadata:
       labels:
-        app: embedding-dpl
+        component: embedding
     spec:
       containers:
-      - name: embedding-dpl
-        image: hush205/autocap-embedding-service:latest
-        resources:
-          requests:
-            cpu: 200m
-            memory: 3Gi
-        env:
-        - name: APP_NAME
-          value: "Embedding Service"
-        - name: VERSION
-          value: "1.0.0"
-        - name: CLIP_MODEL_DIR
-          value: "/models/clip-roberta-finetuned"
----
+        - name: embedding
+          image: hush205/autocap-embedding-service:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 400Mi
+            limits:
+              cpu: 4000m
+              memory: 4Gi
+          ports:
+            - containerPort: 80
+            

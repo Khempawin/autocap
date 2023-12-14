@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: index-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: index
+  template:
+    metadata:
+      labels:
+        component: index
+    spec:
+      containers:
+        - name: index
+          image: hush205/autocap-index-service:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 400Mi
+            limits:
+              cpu: 4000m
+              memory: 5Gi
+          ports:
+            - containerPort: 80
+            
