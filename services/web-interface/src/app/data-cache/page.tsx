@@ -49,10 +49,10 @@ export default function DataCaching() {
     }
 
     return (
-      <table className="min-w-full divide-y divide-gray-200">
+      <table className="min-w-full divide-y divide-gray-200 max-w-md">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="w-48 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Cache Key
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -63,11 +63,11 @@ export default function DataCaching() {
         <tbody className="bg-white divide-y divide-gray-200">
           {cacheEntries.map(([key, value]) => (
             <tr key={key}>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4">
                 {key}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                {value}
+              <td className="px-6 py-4">
+                {value.length >= 256 ? value.slice(0, 1024) + "..." : value}
               </td>
             </tr>
           ))}
@@ -102,7 +102,7 @@ export default function DataCaching() {
         </form>
       </div>
       <div className="flex flex-col items-center w-full">
-        <h2 className="text-2xl font-semibold mb-4">Cache Data</h2>
+        <h2 className="text-2xl font-semibold my-4">Cache Data</h2>
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full">
             {loading ? 'Fetching data...' : renderCacheTable()}

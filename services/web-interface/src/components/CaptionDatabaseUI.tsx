@@ -92,7 +92,7 @@ export default function CaptionDatabase() {
                 }}>
                     <div className="flex">
                         <div className="flex-initial w-64">
-                            <input type="number" value={captionId} onChange={(e) => setCaptionId(parseInt(e.target.value))} placeholder="Enter a caption id" />
+                            <input type="number" value={captionId} onChange={(e) => setCaptionId(parseInt(e.target.value))} placeholder="Enter a caption id" className="w-4/5 p-2 border rounded" />
                         </div>
                         <div className="flex-initial w-32">
                             <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

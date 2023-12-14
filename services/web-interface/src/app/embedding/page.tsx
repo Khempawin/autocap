@@ -22,7 +22,7 @@ export default function Embedding() {
     if (inputFile) {
       let formData = new FormData();
       formData.append("image", inputFile as Blob);
-      let result = await Axios.post("http://localhost:8000/api/v1/embed/image", formData, {
+      let result = await Axios.post("/api/v1/embed/image", formData, {
         headers: headers
       })
       setImageResponse(result);
@@ -30,7 +30,7 @@ export default function Embedding() {
     if (inputCaption) {
       let formData = new FormData();
       formData.append("caption", inputCaption);
-      let result = await Axios.post("http://localhost:8000/api/v1/embed/caption", formData, {
+      let result = await Axios.post("/api/v1/embed/caption", formData, {
         headers: headers
       })
       setCaptionResponse(result);

@@ -4,8 +4,8 @@ export default function CaptionDatabasePage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="w-4/5">
-        <h2 className="m-8">Caption Database UI</h2>
+      <div className="flex-1 min-w-0 w-full bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-center text-4xl font-bold mb-8">Caption Database UI</h1>
         <CaptionDatabase />
       </div>
     </main>
