@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const res = await axios.get(targetURI);
 
   return Response.json({
-    "result": res.data.caption_count,
+    "result": res.data.result,
     "gateway": `${process.env.API_GATEWAY_BASE_URL}`
   });
 }

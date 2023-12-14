@@ -14,7 +14,7 @@ router = APIRouter()
 def caption_database_info(use_cache: bool=True, db: Session = Depends(get_db)):
     # Get caption count
     return {
-        "caption_count" : get_caption_count(use_cache, db),
+        "result" : get_caption_count(use_cache, db),
     }
 
 
