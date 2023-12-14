@@ -1,7 +1,6 @@
 # Final Project Repository
 
-Team: Pawin Taechoyotin
-      Josh Myers-Dean
+Team: Pawin Taechoyotin, Josh Myers-Dean
 
 You need to provide us access to your code repository.
 
